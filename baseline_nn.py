@@ -1,6 +1,12 @@
+import os
+
+# Get list of visible GPUs
+visible_gpu_list = [int(gpu.strip()) for gpu in os.getenv('CUDA_VISIBLE_DEVICES').split(',')]
+print(f"Visible GPUs: {visible_gpu_list}")
+
 try:
     import waitGPU
-    waitGPU.wait(utilization=50, memory_ratio=0.5, available_memory=5000, interval=9, nproc=1, ngpu=1)
+    waitGPU.wait(gpu_ids=visible_gpu_list, utilization=50, memory_ratio=0.5, available_memory=5000, interval=9, nproc=1, ngpu=1)
 except ImportError:
     pass
 
@@ -17,13 +23,12 @@ import numpy as np
 import pickle
 import time
 from setproctitle import setproctitle
-import os
 import argparse
 
 from utils import my_hash, str_to_bool
 import default_args
 
-DEVICE = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 def main():
     parser = argparse.ArgumentParser(description='baseline_nn')
