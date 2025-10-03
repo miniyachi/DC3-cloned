@@ -1,9 +1,10 @@
-torch>=1.8
-numpy
-scipy
-pandas
-osqp
-qpth
 argparse
+numpy
+osqp
+pandas
+pypower
+qpth
+scipy
 setproctitle
+torch>=1.8
 waitGPU
