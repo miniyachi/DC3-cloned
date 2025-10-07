@@ -25,8 +25,9 @@ import time
 from setproctitle import setproctitle
 import argparse
 
-from utils import my_hash, str_to_bool
+from utils import my_hash, str_to_bool, get_DC3_exp_name
 import default_args
+import datetime
 
 DEVICE = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
@@ -119,8 +120,8 @@ def main():
                 pass
     data._device = DEVICE
 
-    save_dir = os.path.join('results', str(data), 'method', my_hash(str(sorted(list(args.items())))),
-        str(time.time()).replace('.', '-'))
+    save_dir = os.path.join('results', str(data), 'method', get_DC3_exp_name(args), 
+                            datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     with open(os.path.join(save_dir, 'args.dict'), 'wb') as f:

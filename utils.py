@@ -6,7 +6,7 @@ torch.set_default_dtype(torch.float64)
 import numpy as np
 import osqp
 from qpth.qp import QPFunction
-import ipopt
+# import ipopt
 from scipy.linalg import svd
 from scipy.sparse import csc_matrix
 
@@ -1170,3 +1170,13 @@ def PFFunction(data, tol=1e-5, bsz=200, max_iters=50):
 
 
     return PFFunctionFn.apply
+
+def get_DC3_exp_name(args):
+    if args['useCompl'] and args['useTrainCorr'] and args['useTestCorr'] and args['corrMode'] == 'partial':
+        return 'DC3'
+    elif not args['useCompl'] and args['corrMode'] == 'full':
+        return 'DC3_no_compl_naive_corr'
+    elif not args['useTrainCorr']:
+        return 'DC3_no_train_corr'
+    elif args['softWeight'] == 0.0:
+        return 'DC3_no_soft_loss'
